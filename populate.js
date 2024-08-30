@@ -37,5 +37,6 @@ const createRestaurants = async () => {
     process.exit(1);
   }
 };
+exports.createRestaurants = createRestaurants;
 
-createRestaurants();
+// createRestaurants();

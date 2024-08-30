@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const authRoutes = require('./routes/authRoutes');
+const Restaurant = require('./models/Restaurant');
 
 // Load environment variables
 dotenv.config();
@@ -23,6 +24,18 @@ app.use('/api/auth', authRoutes);
 // headlth route
 app.get('/', (req, res) => {
   res.send('Server is running');
+});
+
+// check if the database is empty then run the script populate.js
+app.get('/api/populate', async (req, res) => {
+  const { createRestaurants } = require('./populate');
+  const restaurants = await Restaurant.find();
+  if (restaurants.length === 0) {
+    createRestaurants();
+    res.send('Database populated with 20,000 restaurant records');
+  } else {
+    res.send('Database already has data');
+  }
 });
 
 const PORT = process.env.PORT || 5000;
