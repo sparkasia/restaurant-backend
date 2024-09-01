@@ -4,5 +4,5 @@ const { searchRestaurants } = require('../controllers/restaurantController');
 const { protect } = require('../middleware/authMiddleware');
 const router = express.Router();
 
-router.get('/', searchRestaurants);
+router.get('/', protect, searchRestaurants);
 module.exports = router;
