@@ -14,9 +14,13 @@ Ensure you have the following installed:
 
 ### Installation
 
-` git clone https://github.com/khalilahmad3212/restuarant-backend.git `
+`git clone https://github.com/khalilahmad3212/restuarant-backend.git`
 
-` npm install `
+`npm install`
+
+### *.env file setup*
+
+rename `.env.example` to `.env `
 
 ### Run the Project
 
