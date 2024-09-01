@@ -13,6 +13,18 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
 });
 
+const getImage = () => {
+  try {
+    fetch('https://foodish-api.com/api/')
+      .then((response) => response.json())
+      .then((data) => {
+        return data.image;
+      });
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 const createRestaurants = async () => {
   try {
     await Restaurant.deleteMany(); // Clear existing data
@@ -23,8 +35,9 @@ const createRestaurants = async () => {
       restaurants.push({
         name: faker.company.companyName(),
         cuisine: faker.random.arrayElement(['Italian', 'Chinese', 'Mexican', 'Indian', 'American']),
-        location: faker.address.city(),
+        location: faker.random.arrayElement(['New York', 'Los Angeles', 'Chicago', 'Houston', 'San Francisco']),
         rating: faker.random.number({ min: 1, max: 5 }),
+        // image: getImage() || 'required', // Generates a food-related image
       });
     }
 
@@ -37,6 +50,7 @@ const createRestaurants = async () => {
     process.exit(1);
   }
 };
+
 exports.createRestaurants = createRestaurants;
 
 // createRestaurants();

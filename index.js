@@ -1,6 +1,7 @@
 // index.js
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const connectDB = require('./config/db');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -15,6 +16,8 @@ connectDB();
 const app = express();
 
 // Body parser middleware
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Mount routes
@@ -24,6 +27,14 @@ app.use('/api/auth', authRoutes);
 // headlth route
 app.get('/', (req, res) => {
   res.send('Server is running');
+});
+
+// get the cuisine, location, and rating from the database for dropdowns
+app.get('/api/filters', async (req, res) => {
+  const cuisine = await Restaurant.find().distinct('cuisine');
+  const location = await Restaurant.find().distinct('location');
+  const rating = await Restaurant.find().distinct('rating');
+  res.json({ cuisine, location, rating });
 });
 
 // check if the database is empty then run the script populate.js

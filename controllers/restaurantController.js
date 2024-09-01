@@ -1,5 +1,6 @@
-// controllers/restaurantController.js
 const Restaurant = require('../models/Restaurant');
+
+// controllers/restaurantController.js
 
 // @desc    Search restaurants by name
 // @route   GET /api/restaurants/search
@@ -15,14 +16,20 @@ exports.searchRestaurants = async (req, res) => {
     if (rating) query.rating = { $gte: rating };
 
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 12;
     const skip = (page - 1) * limit;
 
-    const restaurants = await Restaurant.find(query).skip(skip).limit(limit);
+    const restaurants = await Restaurant.find(query)
+      .skip(skip)
+      .limit(limit);
+
+    const totalRestaurants = await Restaurant.countDocuments(query);
+    const totalPages = Math.ceil(totalRestaurants / limit);
 
     res.status(200).json({
       success: true,
       count: restaurants.length,
+      pages: totalPages,
       data: restaurants,
     });
   } catch (error) {

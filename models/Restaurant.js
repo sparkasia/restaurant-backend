@@ -1,5 +1,6 @@
-// models/Restaurant.js
 const mongoose = require('mongoose');
+
+// models/Restaurant.js
 
 const RestaurantSchema = new mongoose.Schema({
   name: {
